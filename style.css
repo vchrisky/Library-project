@@ -1,0 +1,196 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    text-align: center;
+    background-color: gainsboro;
+}
+
+@font-face {
+  font-family: Browood;
+  src: url(./assets/browood/Browood-Regular.ttf);
+}
+
+@font-face {
+  font-family: Raisin;
+  src: url(./assets/raisin_up/Raisin\ Up\ Italic.otf);
+}
+
+@font-face {
+  font-family: summary-notes;
+  src: url(./assets/handwritten-font-collection/summary-notes-74188/SummaryNotesRegular-Ea5ln.ttf);
+}
+
+@font-face {
+  font-family: vacer-sans;
+  src: url(./assets/text-fonts-font-collection/vacer-sans-23807/VacerSansPersonal-36JX.ttf);
+}
+
+@font-face {
+  font-family: vacer-sans-bold;
+  src: url(./assets/text-fonts-font-collection/vacer-sans-23807/VacerSansPersonalFat-AAK6.ttf);
+}
+@keyframes fade-in {
+    0% {
+      opacity: 0;
+      transform: scaleY(0);
+      display: none;
+    }
+  
+    100% {
+      opacity: 1;
+      transform: scaleY(1);
+      display: block;
+    }
+  }
+
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+      transform: scaleY(1);
+      display: block;
+    }
+  
+    100% {
+      opacity: 0;
+      transform: scaleY(0);
+      display: none;
+    }
+  }
+  
+  @keyframes backdrop-fade-in {
+    0% {
+      background-color: rgb(0 0 0 / 0);
+    }
+  
+    100% {
+      background-color: rgb(0 0 0 / 0.25);
+    }
+  }
+
+.books-display{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(370px, 1fr));
+}
+
+.books-display > *{
+    background-color: #15803d;
+    color: aliceblue;
+    padding: 20px;
+    border: none;
+    border-radius: 5px;
+    margin: 20px;
+    text-align: start;
+}
+
+.books-display > * > *{
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    grid-auto-flow: column;
+    gap: 10px;
+    button{
+      justify-self: end;
+    }
+}
+
+.books-display > div > div > div{
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);
+    /* gap: 10px; */
+    align-items: center;
+}
+
+.book-number, h2{
+  font-family: Browood;
+}
+
+.head-column{
+  font-family: vacer-sans-bold;
+  font-size: 1.5em;
+}
+
+.value-column{
+  font-family: vacer-sans;
+  font-size: 1.5em;
+}
+
+button{
+    padding: 6px;
+    border-radius: 5px;
+    background-color: #84cc16;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover{
+  background-color: #65a30d;
+}
+
+button:active{
+    background-color: chocolate;
+    translate: 2px;
+    transform: scale(1.1);
+}
+
+button[value]{
+  background-color: firebrick;
+}
+
+.read-btn.button{
+  justify-self: start;
+}
+
+#close-modal{
+  margin-left: 1.5rem;
+}
+
+label{
+  font-family: vacer-sans;
+  font-size: 1.5em;
+}
+
+form > p{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-flow: column;
+    gap: 20px;
+    text-align: start;
+}
+
+#book-modal{
+    border: none;
+    border-radius: 15px;
+    background-image: linear-gradient( 45deg, magenta, rebeccapurple, dodgerblue);
+    color: aliceblue;
+}
+
+input{
+    border-radius: 5px;
+    border: none;
+    min-height: 1.3rem;
+    font-size: 1.2em;
+}
+
+input:focus-visible{
+  outline-color: magenta;
+}
+
+input[type="checkbox"]{
+  margin-bottom: 1.2rem;
+  margin-right: 17rem;
+}
+
+dialog{
+    animation: fade-out 0.7s ease-out;
+}
+
+dialog[open]{
+    animation: fade-in 0.7s ease-out;
+    
+}
+
+dialog[open]::backdrop{
+    animation: backdrop-fade-in 0.7s ease-out forwards;
+}

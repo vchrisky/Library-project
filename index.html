@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="skeleton.css">
+    <script src="./script.js" async></script>
+    <title>Library</title>
+</head>
+<body>
+    <h2>Chrisky's Library</h2>
+    <button type="button" id="add-book">ADD NEW BOOK</button>
+    <div class="books-display"></div>
+    <dialog id="book-modal">
+        <form class="modal-form">
+            <p>
+                <label for="title">Book Title:</label>
+                <input type="text" id="title" required placeholder="e.g Lord of the Rings" autofocus>
+            </p>
+            <p>
+                <label for="author">Author:</label>
+                <input type="text" id="author" required placeholder="e.g J.K. Rowling">
+            </p>
+            <p>
+                <label for="pages">No. of Pages:</label>
+                <input type="number" id="pages" required>
+            </p>
+            <p>
+                <label for="read">Have you read this book?:</label>
+                <input type="checkbox" id="read">
+            </p>
+            <button id="submit" formmethod="dialog">Submit</button>
+            <button id="close-modal">Close</button>
+        </form>
+    </dialog>
+</body>
+</html>
