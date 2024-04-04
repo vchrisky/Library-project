@@ -90,7 +90,7 @@ function displayBook(myLibrary) {
 
         dltBtn.addEventListener("click", () => {
             let confirm = prompt(`Are you sure you want to delete ${book.title} permanently?`, "Yes");
-            
+
             if (confirm) {
                 myLibrary.splice(index, 1);
                 localStorage.setItem( 'books', JSON.stringify(myLibrary));
