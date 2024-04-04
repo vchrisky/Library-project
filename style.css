@@ -134,7 +134,7 @@ button:active{
     transform: scale(1.1);
 }
 
-button[value]{
+.delete-button{
   background-color: firebrick;
 }
 

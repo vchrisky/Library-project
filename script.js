@@ -1,145 +1,137 @@
-const myLibrary = [];
 
-function Book(title, author, pages, read) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.read = function () {
-        if (read) {
-            this.readBook = true;
-            return "I have read this book";
-        }else{
-            this.readBook = false;
-            return "Not read yet";
-        }
+class Book {
+    constructor(title, author, pages, read) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.read = read;
     }
-    this.info = function () {
-        return `${this.title} by ${this.author}, ${this.pages} pages, ${this.read()}`;
-    }
-}
 
-function addBookToLibrary(title, author, pages, read) {
-    if (typeof(title) === "object") {
-        myLibrary.push(title);
-    } else {
-        const newBook = new Book(title, author, pages, read);
-        myLibrary.push(newBook); 
+    get readOrNot() {
+        return this.read ? true : false;
+    }
+
+    toggleRead() {
+        this.read = !this.read;
+    }
+
+    addBookToLibrary() {
+        return myLibrary.push(this); 
     }
 }
-//Manually added books
-const theHobbit = new Book("The Hobbit", "J.R.R Tolkien", 295, "read");
-
-addBookToLibrary("Harry Potter", "J.K. Rowling", 365);
-addBookToLibrary(theHobbit);
-addBookToLibrary("Things Fall Apart", "Chinua Achebe", 235, "read");
-addBookToLibrary("I Will Marry When I Want");
-addBookToLibrary("Purple Hibiscus", "Chimamanda Ngozi Adichie", 316, "read")
-console.log(myLibrary);
 
 
-const displayDiv = document.querySelector(".books-display");
-let bookNumber = 1;
-let arrayNo = 0;
+const existingBooks = JSON.parse(localStorage.getItem('books'));
 
+const myLibrary = existingBooks || [];
 
-function displayBook() {
-    myLibrary.forEach(function(e){
-        let bookDiv = displayDiv.appendChild(document.createElement("div"));
-
-        let headDtls = bookDiv.appendChild(document.createElement("div"));
-
-        let bookNo = headDtls.appendChild(document.createElement("h3"));
-        bookNo.textContent = `Book ${bookNumber++}`;
-        bookNo.classList.add("book-number");
-        let dltBtn = headDtls.appendChild(document.createElement("button"));
-        dltBtn.textContent = "Delete";
-        dltBtn.setAttribute("value", `${arrayNo++}`);
-
-        let bookDtls = bookDiv.appendChild(document.createElement("div"));
-        
-        let headClmn = bookDtls.appendChild(document.createElement("div"));
-        headClmn.classList.add("head-column");
-        let valueClmn = bookDtls.appendChild(document.createElement("div"));
-        valueClmn.classList.add("value-column");
+/**
+ * Displays books in a library.
+ * @param {Array} myLibrary - An array of book objects representing the books in the library.
+*/
+function displayBook(myLibrary) {
     
-        let headTitle = headClmn.appendChild(document.createElement("div"));
-        let headAuthor = headClmn.appendChild(document.createElement("div"));
-        let headPages = headClmn.appendChild(document.createElement("div"));
-        let readBtn = headClmn.appendChild(document.createElement("button"));
+    const displayDiv = document.querySelector(".books-display");
+    displayDiv.innerHTML = "";
+    
+    myLibrary.forEach((book) => {
+        const index = myLibrary.indexOf(book);
+        const bookDiv = document.createElement("div");
+        displayDiv.appendChild(bookDiv);
 
-        headTitle.textContent = `TITLE:`;
-        headAuthor.textContent = `AUTHOR:`;
-        headPages.textContent = `NO. OF PAGES:`;
-        readBtn.textContent = "READ";
+        const headDtls = document.createElement("div");
+        bookDiv.appendChild(headDtls);
+
+        const bookNo = document.createElement("h3");
+        bookNo.textContent = `Book ${index + 1}`;
+        bookNo.classList.add("book-number");
+        headDtls.appendChild(bookNo);
+
+        const dltBtn = document.createElement("button");
+        dltBtn.textContent = "Delete";
+        dltBtn.classList.add("delete-button");
+        headDtls.appendChild(dltBtn);
+
+        const bookDtls = document.createElement("div");
+        bookDiv.appendChild(bookDtls);
+
+        const headClmn = document.createElement("div");
+        headClmn.classList.add("head-column");
+        bookDtls.appendChild(headClmn);
+
+        const valueClmn = document.createElement("div");
+        valueClmn.classList.add("value-column");
+        bookDtls.appendChild(valueClmn);
+
+        const headTitle = document.createElement("div");
+        const headAuthor = document.createElement("div");
+        const headPages = document.createElement("div");
+        const readBtn = document.createElement("button");
+
+        headTitle.textContent = "TITLE:";
+        headAuthor.textContent = "AUTHOR:";
+        headPages.textContent = "NO. OF PAGES:";
+        readBtn.textContent = book.readOrNot ? 'Not Read' : "READ";
         readBtn.classList.add("read-btn", "button");
 
-        let displayTitle = valueClmn.appendChild(document.createElement("div"));
-        let displayAuthor = valueClmn.appendChild(document.createElement("div"));
-        let displayPages = valueClmn.appendChild(document.createElement("div"));
-        let displayRead = valueClmn.appendChild(document.createElement("div"));
-    
-        displayTitle.textContent = `${e.title}`;
-        displayAuthor.textContent = `${e.author}`;
-        displayPages.textContent = `${e.pages}`;
-        displayRead.textContent = `${e.read()}`;
+        headClmn.append(headTitle, headAuthor, headPages, readBtn);
 
+        const displayTitle = document.createElement("div");
+        const displayAuthor = document.createElement("div");
+        const displayPages = document.createElement("div");
+        const displayRead = document.createElement("div");
 
-        dltBtn.addEventListener('click', () => {
-            myLibrary.splice(dltBtn.value,1);
-            console.log(myLibrary);
-            displayDiv.innerHTML = "";
-            bookNumber = 1;
-            arrayNo = 0;
-            displayBook();
-            alert(`You have Removed "${e.title}"`);
-            })
+        displayTitle.textContent = book.title;
+        displayAuthor.textContent = book.author;
+        displayPages.textContent = book.pages;
+        displayRead.textContent = book.readOrNot ? "I have read this book" : "Not yet read";
+        
+        valueClmn.append(displayTitle, displayAuthor, displayPages, displayRead);
 
-        readBtn.addEventListener('click', () => {
-            if (e.readBook) {
-                readBtn.textContent = "READ";
-                displayRead.textContent = `Not yet read`;
-                e.readBook = false;
-            } else {
-                readBtn.textContent = "NOT READ";
-                displayRead.textContent = `I have read this book`;
-                e.readBook = true;
+        dltBtn.addEventListener("click", () => {
+            let confirm = prompt(`Are you sure you want to delete ${book.title} permanently?`, "Yes");
+            
+            if (confirm) {
+                myLibrary.splice(index, 1);
+                localStorage.setItem( 'books', JSON.stringify(myLibrary));
+                displayBook(myLibrary);
+                alert(`You have Removed "${book.title}"`);   
             }
-            console.log(myLibrary);
-        })    
-        }
-    )
+        });
+        
+        readBtn.addEventListener("click", () => {
+            book.toggleRead();
+            readBtn.textContent = book.readOrNot ?  "NOT READ" : "READ" ;
+            displayRead.textContent = book.read ? "I have read this book" : "Not yet read";
+        });
+    });
 }
 
-displayBook();
+displayBook(myLibrary);
 
-let addBookBtn = document.querySelector("#add-book");
-let addBookModal = document.getElementById("book-modal");
-let closeModal = document.getElementById("close-modal");
-let submitBook = document.getElementById("submit");
-let titleInput = document.getElementById("title");
-let authorInput = document.getElementById("author");
-let pagesInput = document.getElementById("pages");
-let readInput = document.getElementById("read");
-let bookForm = document.querySelector(".modal-form");
+const modalDisplay = (() => {
+    let addBookBtn = document.querySelector("#add-book");
+    let addBookModal = document.getElementById("book-modal");
+    let closeModal = document.getElementById("close-modal");
+    let titleInput = document.getElementById("title");
+    let authorInput = document.getElementById("author");
+    let pagesInput = document.getElementById("pages");
+    let readInput = document.getElementById("read");
+    let bookForm = document.querySelector(".modal-form");
 
-addBookBtn.addEventListener('click', () => {
-    // titleInput.focus();
-    addBookModal.showModal(); 
-})
+    addBookBtn.addEventListener('click', () => {
+        addBookModal.showModal();
+    });
 
-closeModal.addEventListener('click', (event) => {
-    event.preventDefault();
-    addBookModal.close();
-})
+    closeModal.addEventListener('click', (event) => {
+        event.preventDefault();
+        addBookModal.close();
+    });
 
-submitBook.addEventListener('click', (event) => {
-    // event.preventDefault();
-    addBookToLibrary(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
-    console.log(myLibrary);
-    displayDiv.innerHTML = "";
-    bookNumber = 1;
-    arrayNo = 0;
-    displayBook();
-    // addBookModal.close();
-    // addBookModal.textContent = "";
-})
+    bookForm.onsubmit = () => {
+        const newBook = new Book(titleInput.value, authorInput.value, pagesInput.value, readInput.checked);
+        newBook.addBookToLibrary();
+        localStorage.setItem( 'books', JSON.stringify(myLibrary));
+        displayBook(myLibrary);
+    }
+})();
